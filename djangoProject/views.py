@@ -8,9 +8,10 @@ def home(request):
 
 def test(request):
     if request.GET.get('module', '') == "onTest":
-        return render(request, 'deaky.html')
+        return render(request, 'accueil.html')
     else:
-        return render(request, 'base.html')
+        return 0
 
-def dynamic(request, id):
-    ret
+def articles(request):
+    return render(request, 'article/article.html')
+
