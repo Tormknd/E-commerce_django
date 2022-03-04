@@ -4,35 +4,24 @@
 <main class="container">
     <div class="container">
         <div class="row">
-            <h1 id="titreArticle"><?= $dataRecue[0]->nom ?> </h1>
+            <h1 id="titreArticle">{{ object.nom }} </h1>
             <div class="col-4"><img class="img-fluid imgArticle" data-image="black"
-                                    src="<?= htmlentities($dataRecue[0]->url) ?>" alt=""></div>
+                                    src="{{ object.url }}" alt=""></div>
 
             <div class="col-8 divInfoProduit">
 
                 <div class="container">
 
-                    <span class="articletexte prixArticle"><?=$dataRecue[0]->prix ?> €</span>
-                    <?php
-                                            if(isset($dataWishList[0]->idArticle)) {
-                    if($dataWishList[0]->idArticle != null) {
-                    ?>
+                    <span class="articletexte prixArticle">{{ object.prix }} €</span>
+
                     <a href="index.php?module=mod_article&action=affichePageProduit&mode=unFav&nom=<?= $dataRecue[0]->nom ?>"
                        class="nav-item nav-link btn-wishlist">
                         <i class="bi bi-heart-fill article"></i>
                     </a>
-                    <?php
-                                                }
-                                            }
-                                            else {
-                                        ?>
                     <a href="index.php?module=mod_article&action=affichePageProduit&mode=fav&nom=<?= $dataRecue[0]->nom ?>"
                        class="nav-item nav-link btn-wishlist">
                         <i class="bi bi-heart article"></i>
                     </a>
-                    <?php
-                                            }
-                                        ?>
                     <a href="index.php?module=mod_article&action=affichePageProduit&refresh=yes&nom=<?= $dataRecue[0]->nom ?>"
                        class="nav-item nav-link btn-wishlist">
                         <i class="bi bi-activity"></i>
@@ -42,7 +31,7 @@
                     <div class="container">
                         <p class="articletexte texte">categories a ajouter
                         <p>
-                        <p class="articletexte texte">stock disponible : <?= $dataRecue[0]->stock ?>
+                        <p class="articletexte texte">stock disponible : {{ object.stock }}
                         <p>
                     </div>
                 </div>
@@ -52,7 +41,7 @@
 
     <div class="product-description desc">
         <h3>Description :</h3>
-        <p><?= $dataRecue[0]->description ?></p>
+        <p>{{ object.description }}</p>
     </div>
     <div class="container commentaires" style="">
         <h3>Commentaires :</h3>
@@ -66,7 +55,7 @@
         </div>
         <div class="container commentaires">
             <h3>Ajouter un commentaire</h3>
-            <form action="index.php?module=mod_addCom&action=addComment&article=<?=$dataRecue[0]->idArticle?>"
+            <form action="index.php?module=mod_addCom&action=addComment&article={{ object.idarticle }}"
                   method="post">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Votre Commentaire</label>

@@ -49,21 +49,19 @@
 
 						<div class = "row">
 						<!-- affichage des articles -->
-{#						<?php foreach($dataRecue as $articles): ?>#}
+                            {% for article in article_list %}
 								<div class = "col-md-2" >
 									<div class = "container listeJeux">
-										<a href = "article/article.html?module=article" ><img src = "<?=htmlentities($articles->url) ?>" class = "articles_image" alt = ""/></a>
+										<a href = "article/article.html?product={{ article.idarticle }}" ><img src = "{{ article.url }}" class = "articles_image" alt = ""/></a>
 										<div class = "info_produit">
-											<h4><?= htmlentities($articles->nom)?></h4>
+											<h4>{{ article.nom }}</h4>
 											<hr>
-											<h5><?= htmlentities($articles->prix)?> €</h5>
+											<h5>{{ article.prix }} €</h5>
 										</div>
 									</div>
 								</div>
-{#							<?php endforeach?>	#}
+                            {% endfor %}
 						</div>
-
-
 
 						<!-- affichage du dernier commentaire -->
 						<div class = "container divComm">
