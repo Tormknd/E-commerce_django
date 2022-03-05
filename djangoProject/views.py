@@ -5,7 +5,6 @@ from .models import Article
 
 def home(request):
     article_list = Article.objects.all()
-    print(article_list)
     return render(request, 'accueil.html', {'article_list': article_list})
 
 
