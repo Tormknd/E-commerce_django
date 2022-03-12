@@ -21,6 +21,6 @@ urlpatterns = [
     path('', views.home),
     path('index.html', views.test),
     path('article/article.html', views.articles),
-    path('admin/', include('admin.urls'))
+    path('admin/', include('adminInterface.urls'))
 
 ]
