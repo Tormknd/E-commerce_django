@@ -16,12 +16,4 @@ def test(request):
         return 0
 
 
-def articles(request):
-    id = request.GET.get('product', '')
-    article = Article.objects.get(idarticle=id)
-    context = {
-        "object": article
-    }
-    return render(request, 'article/article.html', context)
-
 

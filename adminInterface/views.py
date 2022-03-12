@@ -3,12 +3,14 @@ import datetime
 from django.shortcuts import render
 from djangoProject.models import Article
 from .models import Commande
+from .signals import object_viewed_signal
+from django.contrib.contenttypes.models import ContentType
 
 
 def home(request):
     article = Article.objects.get(idarticle=7)
-    sales = totalSales(request)
-    orders = totalOrders(request)
+    sales = total_sales(request)
+    orders = total_orders(request)
     context = {
         "object": article,
         "sales": sales,
@@ -20,7 +22,7 @@ def home(request):
     return render(request, 'admin/admin.html', context)
 
 
-def totalSales(request):
+def total_sales(request):
     commandList = Commande.objects.all()
     print(commandList)
     prix = 0
@@ -30,7 +32,7 @@ def totalSales(request):
     return prix
 
 
-def totalOrders(request):
+def total_orders(request):
     allOrders = Commande.objects.all()
     lastWeekOrdersNum = 0
     currentWeekOrdersNum = 0
@@ -40,11 +42,9 @@ def totalOrders(request):
 
     for order in allOrders:
         date2 = datetime.date(order.datecommande.year, order.datecommande.month, order.datecommande.day)
-        print("date2", date2)
         if date2 >= endLastWeek:
             currentWeekOrdersNum += 1
         elif (date2 <= endLastWeek) and (date2 >= startLastWeek):
-            print("true")
             lastWeekOrdersNum += 1
     print(currentWeekOrdersNum, lastWeekOrdersNum)
     percentage = percent(lastWeekOrdersNum, currentWeekOrdersNum)
@@ -60,3 +60,7 @@ def previous_week_range(date):
     start_date = date + datetime.timedelta(-date.weekday(), weeks=-1)
     end_date = date + datetime.timedelta(-date.weekday() - 1)
     return start_date, end_date
+
+
+
+
