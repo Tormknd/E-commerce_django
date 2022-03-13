@@ -17,6 +17,7 @@ def home(request):
     article = Article.objects.get(idarticle=7)
     sales = total_sales(request)
     orders = total_orders(request)
+    month_sales = monthly_sales()
     all_sessions_number = weekly_visitors_by_sessions(request)
     context = {
         "object": article,
@@ -26,10 +27,46 @@ def home(request):
         "lastWeekOrders": orders[1],
         "order_percentage": orders[2],
         "unique_visitors": all_sessions_number[0],
-        "visitors_percentage": all_sessions_number[1]
+        "visitors_percentage": all_sessions_number[1],
+        "month_sales": month_sales
     }
 
     return render(request, 'admin/admin.html', context)
+
+
+def get_client_ip(request):
+    ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    if ip:
+        ip2 = ip.split(',')[0]
+    else:
+        ip2 = request.META.get('REMOTE_ADDR')
+
+    return ip2
+
+
+def monthly_sales():
+    months_sales = {
+        '1': 0,
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+        '6': 0,
+        '7': 0,
+        '8': 0,
+        '9': 0,
+        '10': 0,
+        '11': 0,
+        '12': 0,
+    }
+    sales = Commande.objects.all()
+
+    for sale in sales:
+        for month in months_sales:
+            if sale.datecommande.month.__str__() == month:
+                months_sales[month] += sale.prixcommande
+
+    return months_sales
 
 
 def weekly_visitors_by_sessions(request):

@@ -339,7 +339,8 @@
                                             </div>
                                             <h1 class="mt-1 mb-3">{{ sales|floatformat }}€</h1>
                                             <div class="mb-0">
-                                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> {{ sales_percent }}% </span>
+                                                <span class="text-danger"> <i
+                                                        class="mdi mdi-arrow-bottom-right"></i> {{ sales_percent }}% </span>
                                                 <span class="text-muted">Since last week</span>
                                             </div>
                                         </div>
@@ -359,7 +360,8 @@
                                             </div>
                                             <h1 class="mt-1 mb-3">{{ unique_visitors }}</h1>
                                             <div class="mb-0">
-                                                <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> {{ visitors_percentage }}% </span>
+                                                <span class="text-success"> <i
+                                                        class="mdi mdi-arrow-bottom-right"></i> {{ visitors_percentage }}% </span>
                                                 <span class="text-muted">Since last week</span>
                                             </div>
                                         </div>
@@ -401,7 +403,8 @@
                                             </div>
                                             <h1 class="mt-1 mb-3">{{ orders }}</h1>
                                             <div class="mb-0">
-                                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> {{ order_percentage }}% </span>
+                                                <span class="text-danger"> <i
+                                                        class="mdi mdi-arrow-bottom-right"></i> {{ order_percentage }}% </span>
                                                 <span class="text-muted">Since last week</span>
                                             </div>
                                         </div>
@@ -624,7 +627,9 @@
         var gradient = ctx.createLinearGradient(0, 0, 0, 225);
         gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
         gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
-        let januaryValue = `{{object.prix}}`.replace(/,/g,'.'); {# POUR AFFICHER LES PRIX CORRECTEMENT #}
+        let test = `{{month_sales.3}}`.replace(/,/g, '.');
+        let januaryValue = `{{object.prix}}`.replace(/,/g, '.');
+        {# POUR AFFICHER LES PRIX CORRECTEMENT #}
         // Line chart
         new Chart(document.getElementById("chartjs-dashboard-line"), {
             type: "line",
@@ -636,18 +641,18 @@
                     backgroundColor: gradient,
                     borderColor: window.theme.primary,
                     data: [
-                        januaryValue,
-                        1562,
-                        1584,
-                        1892,
-                        1587,
-                        1923,
-                        2566,
-                        2448,
-                        2805,
-                        3438,
-                        2917,
-                        3327
+                        `{{month_sales.1}}`.replace(/,/g, '.'),
+                        `{{month_sales.2}}`.replace(/,/g, '.'),
+                        `{{month_sales.3}}`.replace(/,/g, '.'),
+                        `{{month_sales.4}}`.replace(/,/g, '.'),
+                        `{{month_sales.5}}`.replace(/,/g, '.'),
+                        `{{month_sales.6}}`.replace(/,/g, '.'),
+                        `{{month_sales.7}}`.replace(/,/g, '.'),
+                        `{{month_sales.8}}`.replace(/,/g, '.'),
+                        `{{month_sales.9}}`.replace(/,/g, '.'),
+                        `{{month_sales.10}}`.replace(/,/g, '.'),
+                        `{{month_sales.11}}`.replace(/,/g, '.'),
+                        `{{month_sales.12}}`.replace(/,/g, '.')
                     ]
                 }]
             },
