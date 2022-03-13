@@ -337,9 +337,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h1 class="mt-1 mb-3">{{ sales }}€</h1>
+                                            <h1 class="mt-1 mb-3">{{ sales|floatformat }}€</h1>
                                             <div class="mb-0">
-                                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
+                                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> {{ sales_percent }}% </span>
                                                 <span class="text-muted">Since last week</span>
                                             </div>
                                         </div>
@@ -357,9 +357,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h1 class="mt-1 mb-3">14.212</h1>
+                                            <h1 class="mt-1 mb-3">{{ unique_visitors }}</h1>
                                             <div class="mb-0">
-                                                <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
+                                                <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> {{ visitors_percentage }}% </span>
                                                 <span class="text-muted">Since last week</span>
                                             </div>
                                         </div>
@@ -379,7 +379,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h1 class="mt-1 mb-3">{{ sales }}€</h1>
+                                            <h1 class="mt-1 mb-3">{{ sales|floatformat }}€</h1>
                                             <div class="mb-0">
                                                 <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
                                                 <span class="text-muted">Since last week</span>
@@ -401,7 +401,7 @@
                                             </div>
                                             <h1 class="mt-1 mb-3">{{ orders }}</h1>
                                             <div class="mb-0">
-                                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> {{ percentage }}% </span>
+                                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> {{ order_percentage }}% </span>
                                                 <span class="text-muted">Since last week</span>
                                             </div>
                                         </div>

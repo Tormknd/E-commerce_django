@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sessions.backends.db',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
@@ -50,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+SESSION_SAVE_EVERY_REQUEST = True
 
 ROOT_URLCONF = 'djangoProject.urls'
 
@@ -131,3 +134,5 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
