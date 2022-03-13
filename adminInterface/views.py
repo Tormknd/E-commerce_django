@@ -1,5 +1,4 @@
 import datetime
-import base64
 
 from django.shortcuts import render
 from product.models import Article
@@ -14,6 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 
 def home(request):
     CreateSession.session(CreateSession, request)
+    check_client_device(request)
     article = Article.objects.get(idarticle=7)
     sales = total_sales(request)
     orders = total_orders(request)
@@ -42,6 +42,16 @@ def get_client_ip(request):
         ip2 = request.META.get('REMOTE_ADDR')
 
     return ip2
+
+
+def check_client_device(request):
+    keywords = ['Mobile', 'Opera Mini', 'Android']
+    user_agent = request.META['HTTP_USER_AGENT']
+
+    if any(word in user_agent for word in keywords):
+        request.session['use_mobile'] = True
+    else:
+        request.session['use_desktop'] = True
 
 
 def monthly_sales():
@@ -107,7 +117,6 @@ def total_sales(request):
             last_week_orders += 1
 
     percentage = percent(last_week_orders, current_week_orders)
-    print(percentage)
 
     return price, current_week_orders, last_week_orders, percentage
 
