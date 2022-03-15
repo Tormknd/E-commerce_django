@@ -15,13 +15,14 @@ def home(request):
     CreateSession.session(CreateSession, request)
     check_client_device(request)
     article = Article.objects.get(idarticle=7)
-    sales = total_sales(request)
+    sales = total_sales_of_week(request)
     orders = total_orders(request)
     month_sales = monthly_sales()
     all_sessions_number = weekly_visitors_by_sessions(request)
     context = {
         "object": article,
-        "sales": sales[0],
+        "total_sales": sales[4],
+        "weekly_sales": sales[0],
         "sales_percent": sales[3],
         "orders": orders[0],
         "lastWeekOrders": orders[1],
@@ -100,25 +101,28 @@ def weekly_visitors_by_sessions(request):
     return sessions_of_this_week, percentage
 
 
-def total_sales(request):
+def total_sales_of_week(request):
     order_list = Commande.objects.all()
     last_week_orders = 0
     current_week_orders = 0
     # I used a method to find the previous weekend and start date
     last_week_start_date = previous_week_range(datetime.datetime.now())[0]
     last_week_end_date = previous_week_range(datetime.datetime.now())[1]
-    price = 0
+    this_week_sales = 0
+    total_sales = 0
     for order in order_list:
-        price += order.prixcommande
+        total_sales += order.prixcommande
         date2 = datetime.datetime(order.datecommande.year, order.datecommande.month, order.datecommande.day)
         if date2 > last_week_end_date:
+            this_week_sales += order.prixcommande
             current_week_orders += 1
         elif (date2 <= last_week_end_date) and (date2 >= last_week_start_date):
             last_week_orders += 1
 
+    print(last_week_orders, current_week_orders)
     percentage = percent(last_week_orders, current_week_orders)
 
-    return price, current_week_orders, last_week_orders, percentage
+    return this_week_sales, current_week_orders, last_week_orders, percentage, total_sales
 
 
 def total_orders(request):

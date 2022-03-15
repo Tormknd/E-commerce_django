@@ -23,7 +23,7 @@ class Article(models.Model):
 
 
 def test(sender, instance, request, *args, **kwargs):
-    print(instance)
+    print("models l.26 ", instance)
 
 
 object_viewed_signal.connect(test)

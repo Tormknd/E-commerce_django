@@ -73,6 +73,8 @@ TEMPLATES = [
     },
 ]
 
+APPEND_SLASH = False
+
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 # Database

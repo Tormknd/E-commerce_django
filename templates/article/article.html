@@ -13,21 +13,10 @@
                 <div class="container">
 
                     <span class="articletexte prixArticle">{{ object.prix }} €</span>
-
-                    <a href="index.php?module=mod_article&action=affichePageProduit&mode=unFav&nom=<?= $dataRecue[0]->nom ?>"
-                       class="nav-item nav-link btn-wishlist">
-                        <i class="bi bi-heart-fill article"></i>
-                    </a>
-                    <a href="index.php?module=mod_article&action=affichePageProduit&mode=fav&nom=<?= $dataRecue[0]->nom ?>"
-                       class="nav-item nav-link btn-wishlist">
-                        <i class="bi bi-heart article"></i>
-                    </a>
-                    <a href="index.php?module=mod_article&action=affichePageProduit&refresh=yes&nom=<?= $dataRecue[0]->nom ?>"
-                       class="nav-item nav-link btn-wishlist">
-                        <i class="bi bi-activity"></i>
-                    </a>
-                    <button type="button" class="btn btn-primary article"> Ajouter Au Panier</button>
-
+                    <form action="buy_item" method="GET">
+                        <button type="button" class="btn btn-primary article" onclick="location.href='{% url "?produit=4/buy" %}'" name="buy_item"> Achat </button>
+                        <button type="button"  class="btn btn-primary article"> Ajouter Au Panier</button>
+                    </form>
                     <div class="container">
                         <p class="articletexte texte">categories a ajouter
                         <p>
@@ -43,50 +32,50 @@
         <h3>Description :</h3>
         <p>{{ object.description }}</p>
     </div>
-    <div class="container commentaires" style="">
-        <h3>Commentaires :</h3>
+{#    <div class="container commentaires" style="">#}
+{#        <h3>Commentaires :</h3>#}
 
-        <div class="overflow-auto">
-            <?php foreach($dataComments as $comment):?>
-            <h5><?=htmlentities($comment->nom) ?> </h5>
-            <p><?=htmlentities($comment->texteCommentaire) ?>
-            <p>
-                <?php endforeach?>
-        </div>
-        <div class="container commentaires">
-            <h3>Ajouter un commentaire</h3>
-            <form action="index.php?module=mod_addCom&action=addComment&article={{ object.idarticle }}"
-                  method="post">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Votre Commentaire</label>
-                    <textarea class="form-control" name="formCommentaire" id="formCommentaire" rows="3"></textarea>
-                    <div id="emailHelp" class="form-text">Vous devez vous connecter pour publier un commentaire.</div>
-                </div>
-
-                <input class="btn btn-primary" type="submit" value="Envoyer">
-            </form>
-        </div>
-
-    </div>
-
-    <div class="container" style="background-color:#f4f4f3">
-        <h3>Vous aimerez aussi :</h3>
-        <div class="row">
-
-            <?php foreach($dataArts as $articles): ?>
-            <div class="col-md-2">
-                <div class="container listeJeux">
-                    <a href="index.php?module=mod_article&action=affichePageProduit&nom=<?= htmlentities($articles->nom)?>"><img
-                            src="<?=htmlentities($articles->url) ?>" class="articles_image" alt=""/></a>
-                    <div class="info_produit">
-                        <h4><?= htmlentities($articles->nom)?></h4>
-                        <hr>
-                        <h5><?= htmlentities($articles->prix)?> €</h5>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach?>
-        </div>
+{#        <div class="overflow-auto">#}
+{#            <?php foreach($dataComments as $comment):?>#}
+{#            <h5><?=htmlentities($comment->nom) ?> </h5>#}
+{#            <p><?=htmlentities($comment->texteCommentaire) ?>#}
+{#            <p>#}
+{#                <?php endforeach?>#}
+{#        </div>#}
+{#        <div class="container commentaires">#}
+{#            <h3>Ajouter un commentaire</h3>#}
+{#            <form action="index.php?module=mod_addCom&action=addComment&article={{ object.idarticle }}"#}
+{#                  method="post">#}
+{#                <div class="mb-3">#}
+{#                    <label for="exampleInputEmail1" class="form-label">Votre Commentaire</label>#}
+{#                    <textarea class="form-control" name="formCommentaire" id="formCommentaire" rows="3"></textarea>#}
+{#                    <div id="emailHelp" class="form-text">Vous devez vous connecter pour publier un commentaire.</div>#}
+{#                </div>#}
+{##}
+{#                <input class="btn btn-primary" type="submit" value="Envoyer">#}
+{#            </form>#}
+{#        </div>#}
+{##}
+{#    </div>#}
+{##}
+{#    <div class="container" style="background-color:#f4f4f3">#}
+{#        <h3>Vous aimerez aussi :</h3>#}
+{#        <div class="row">#}
+{##}
+{#            <?php foreach($dataArts as $articles): ?>#}
+{#            <div class="col-md-2">#}
+{#                <div class="container listeJeux">#}
+{#                    <a href="index.php?module=mod_article&action=affichePageProduit&nom=<?= htmlentities($articles->nom)?>"><img#}
+{#                            src="<?=htmlentities($articles->url) ?>" class="articles_image" alt=""/></a>#}
+{#                    <div class="info_produit">#}
+{#                        <h4><?= htmlentities($articles->nom)?></h4>#}
+{#                        <hr>#}
+{#                        <h5><?= htmlentities($articles->prix)?> €</h5>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <?php endforeach?>#}
+{#        </div>#}
 
 
 </main>
