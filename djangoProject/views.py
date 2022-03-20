@@ -1,6 +1,8 @@
 from datetime import datetime
 from io import StringIO
 from django.shortcuts import render
+
+from adminInterface.views import check_client_device
 from product.models import Article
 from adminInterface.json_datetime_serializer import JSONDateTimeSerializer
 from .createsession import CreateSession
@@ -12,6 +14,7 @@ import psycopg2
 
 def home(request):
     CreateSession.session(CreateSession, request)
+    check_client_device(request)
     return render(request, 'accueil.html', {'article_list': Article.objects.all()})
 
 

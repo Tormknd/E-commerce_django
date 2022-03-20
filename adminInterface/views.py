@@ -13,7 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 
 def home(request):
     CreateSession.session(CreateSession, request)
-    check_client_device(request)
+    clients_device = check_client_device(request)
     article = Article.objects.get(idarticle=7)
     sales = total_sales_of_week(request)
     orders = total_orders(request)
@@ -21,7 +21,6 @@ def home(request):
     all_sessions_number = weekly_visitors_by_sessions(request)
     time_spent = time_spent_on_category()
     keys = list(time_spent.keys())
-    print(time_spent)
     context = {
         "object": article,
         "total_sales": sales[4],
@@ -40,6 +39,8 @@ def home(request):
         "Jeux_de_Tirs": time_spent['Jeux de Tirs'].seconds,
         "Simulation": time_spent['Simulation'].seconds,
         "Course_automobile": time_spent['Course automobile'].seconds,
+        "user_mobile": clients_device[0],
+        "user_desktop": clients_device[1],
     }
 
     return render(request, 'admin/admin.html', context)
@@ -63,6 +64,22 @@ def check_client_device(request):
         request.session['use_mobile'] = True
     else:
         request.session['use_desktop'] = True
+        if 'use_mobile' not in request.session:
+            request.session['use_mobile'] = False
+
+    list_users = {
+        "Mobile": 0,
+        "Desktop": 0,
+    }
+    list_sessions = DjangoSession.objects.all()
+    for session in list_sessions:
+        sess = Session.objects.get(session_key=session.session_key)
+        if sess.get_decoded().get('use_mobile'):
+            list_users['Mobile'] += 1
+        if sess.get_decoded().get('use_desktop'):
+            list_users['Desktop'] += 1
+
+    return list_users['Mobile'], list_users['Desktop']
 
 
 @register.filter('key')
@@ -124,8 +141,8 @@ def time_spent_on_category():
     for x in category_object_name:
         category_list[x] = datetime.timedelta(minutes=0)
 
-    while count < len(browsing_hist)-1:
-        date_difference = browsing_hist[count+1].date - browsing_hist[count].date
+    while count < len(browsing_hist) - 1:
+        date_difference = browsing_hist[count + 1].date - browsing_hist[count].date
         max_date_diff = datetime.timedelta(minutes=5)
         if browsing_hist[count].type.__str__() in category_list:
             key = browsing_hist[count].type.__str__()
@@ -217,4 +234,3 @@ def get_last_date_item(obj):
     else:
         item = obj.first()
         return item
-

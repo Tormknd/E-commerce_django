@@ -1,6 +1,8 @@
 import datetime
 
 from django.shortcuts import render
+
+from adminInterface.views import check_client_device
 from djangoProject.createsession import CreateSession
 from .models import Article
 from django.conf import settings
@@ -21,6 +23,7 @@ article = Article.objects.get(idarticle=3)
 def articles(request):
     mixins.send_on_page_signals(request)
     CreateSession.session(CreateSession, request)
+    check_client_device(request)
     global context
     global article
     id_product = request.GET.get('product', '')
