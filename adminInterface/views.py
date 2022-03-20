@@ -1,12 +1,13 @@
 import datetime
-
 from django.shortcuts import render
-from .models import Commande, Ranger, Categorie
+from .models import Commande, Ranger, Categorie, BrowsingHistory
 from product.models import Article
 from .models import DjangoSession
 from django.contrib.sessions.models import Session
 from .json_datetime_serializer import JSONDateTimeSerializer
 from djangoProject.createsession import CreateSession
+from django.template.defaulttags import register
+
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -18,6 +19,9 @@ def home(request):
     orders = total_orders(request)
     month_sales = monthly_sales()
     all_sessions_number = weekly_visitors_by_sessions(request)
+    time_spent = time_spent_on_category()
+    keys = list(time_spent.keys())
+    print(time_spent)
     context = {
         "object": article,
         "total_sales": sales[4],
@@ -28,7 +32,14 @@ def home(request):
         "order_percentage": orders[2],
         "unique_visitors": all_sessions_number[0],
         "visitors_percentage": all_sessions_number[1],
-        "month_sales": month_sales
+        "month_sales": month_sales,
+        "keys_time_spent": keys,
+        "RPG": time_spent['RPG'].seconds,
+        "ActionRPG": time_spent['Action-RPG'].seconds,
+        "Aventures": time_spent['Aventures'].seconds,
+        "Jeux_de_Tirs": time_spent['Jeux de Tirs'].seconds,
+        "Simulation": time_spent['Simulation'].seconds,
+        "Course_automobile": time_spent['Course automobile'].seconds,
     }
 
     return render(request, 'admin/admin.html', context)
@@ -52,6 +63,11 @@ def check_client_device(request):
         request.session['use_mobile'] = True
     else:
         request.session['use_desktop'] = True
+
+
+@register.filter('key')
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 
 def monthly_sales():
@@ -89,7 +105,6 @@ def weekly_visitors_by_sessions(request):
     for session in all_session:
         sess = Session.objects.get(session_key=session.session_key)
         json_serialized_date = sess.get_decoded().get('creation_date')
-        print(sess.get_decoded().get('page_history'))
         session_creation_date = JSONDateTimeSerializer.loads(JSONDateTimeSerializer, json_serialized_date)
         if session_creation_date > last_week_end_date:
             sessions_of_this_week += 1
@@ -99,6 +114,27 @@ def weekly_visitors_by_sessions(request):
     percentage = percent(last_week_sessions, sessions_of_this_week)
 
     return sessions_of_this_week, percentage
+
+
+def time_spent_on_category():
+    count = 0
+    category_object_name = Categorie.objects.values_list('nomcategorie', flat=True)
+    browsing_hist = BrowsingHistory.objects.all()
+    category_list = {}
+    for x in category_object_name:
+        category_list[x] = datetime.timedelta(minutes=0)
+
+    while count < len(browsing_hist)-1:
+        date_difference = browsing_hist[count+1].date - browsing_hist[count].date
+        max_date_diff = datetime.timedelta(minutes=5)
+        if browsing_hist[count].type.__str__() in category_list:
+            key = browsing_hist[count].type.__str__()
+            if date_difference > max_date_diff:
+                category_list[key] = category_list.get(key, 0) + datetime.timedelta(minutes=5)
+            else:
+                category_list[key] = category_list.get(key, 0) + date_difference
+        count += 1
+    return category_list
 
 
 def total_sales_of_week(request):
@@ -119,7 +155,6 @@ def total_sales_of_week(request):
         elif (date2 <= last_week_end_date) and (date2 >= last_week_start_date):
             last_week_orders += 1
 
-    print(last_week_orders, current_week_orders)
     percentage = percent(last_week_orders, current_week_orders)
 
     return this_week_sales, current_week_orders, last_week_orders, percentage, total_sales
@@ -171,7 +206,6 @@ def get_game_category(game_id):
 
 
 def get_last_date_item(obj):
-    print(obj)
     item = 0
     if len(obj) > 1:
         count = 0

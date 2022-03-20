@@ -1,8 +1,13 @@
 from datetime import datetime
+from io import StringIO
 from django.shortcuts import render
 from product.models import Article
 from adminInterface.json_datetime_serializer import JSONDateTimeSerializer
 from .createsession import CreateSession
+from django.http import HttpResponse
+import matplotlib.pyplot as plt
+import numpy as np
+import psycopg2
 
 
 def home(request):
