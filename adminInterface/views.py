@@ -1,13 +1,12 @@
 import datetime
 
 from django.shortcuts import render
+from .models import Commande, Ranger, Categorie
 from product.models import Article
-from .models import Commande
 from .models import DjangoSession
 from django.contrib.sessions.models import Session
 from .json_datetime_serializer import JSONDateTimeSerializer
 from djangoProject.createsession import CreateSession
-from .signals import object_viewed_signal
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -90,6 +89,7 @@ def weekly_visitors_by_sessions(request):
     for session in all_session:
         sess = Session.objects.get(session_key=session.session_key)
         json_serialized_date = sess.get_decoded().get('creation_date')
+        print(sess.get_decoded().get('page_history'))
         session_creation_date = JSONDateTimeSerializer.loads(JSONDateTimeSerializer, json_serialized_date)
         if session_creation_date > last_week_end_date:
             sessions_of_this_week += 1
@@ -162,3 +162,12 @@ def previous_week_range(date):
     start_date = date + datetime.timedelta(-date.weekday(), weeks=-1)
     end_date = date + datetime.timedelta(-date.weekday() - 1)
     return start_date, end_date
+
+
+def get_game_category(game_id):
+    game_category_id = Ranger.objects.get(idarticle=game_id).idcategorie
+    category_name = Categorie.objects.get(idcategorie=game_category_id).nomcategorie
+    return category_name
+
+
+

@@ -39,3 +39,34 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
+
+class Ranger(models.Model):
+    idarticle = models.PositiveBigIntegerField(db_column='idArticle', primary_key=True)  # Field name made lowercase.
+    idcategorie = models.PositiveBigIntegerField(db_column='idCategorie')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'ranger'
+        unique_together = (('idarticle', 'idcategorie'),)
+
+
+class BrowsingHistory(models.Model):
+    nb = models.AutoField(primary_key=True)
+    session_key = models.ForeignKey('DjangoSession', models.DO_NOTHING, db_column='session_key')
+    date = models.DateField(db_column='date', blank=False, null=False)  # Field name made lowercase.
+    url = models.TextField()
+    type = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'browsing_history'
+
+
+class Categorie(models.Model):
+    idcategorie = models.BigAutoField(db_column='idCategorie', primary_key=True)  # Field name made lowercase.
+    nomcategorie = models.CharField(db_column='nomCategorie', max_length=25, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'categorie'

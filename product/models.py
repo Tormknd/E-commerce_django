@@ -1,5 +1,5 @@
 from django.db import models
-from adminInterface.signals import object_viewed_signal
+# from adminInterface.signals import object_viewed_signal
 
 # Create your models here.
 
@@ -22,9 +22,9 @@ class Article(models.Model):
         db_table = 'article'
 
 
-def test(sender, instance, request, *args, **kwargs):
-    print("models l.26 ", instance)
-
-
-object_viewed_signal.connect(test)
+# def test(sender, instance, request, *args, **kwargs):
+#     print("models l.26 ", instance)
+#
+#
+# object_viewed_signal.connect(test)
 

@@ -19,12 +19,13 @@ article = Article.objects.get(idarticle=3)
 
 
 def articles(request):
+    mixins.send_on_page_signals(request)
     CreateSession.session(CreateSession, request)
     global context
     global article
     id_product = request.GET.get('product', '')
     article = Article.objects.get(idarticle=id_product)
-    mixins.send_article_signals(article, request)
+    # mixins.send_article_signals(article, request)
     context = {
         "object": article
     }
