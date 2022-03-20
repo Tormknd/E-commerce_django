@@ -54,7 +54,7 @@ class Ranger(models.Model):
 class BrowsingHistory(models.Model):
     nb = models.AutoField(primary_key=True)
     session_key = models.ForeignKey('DjangoSession', models.DO_NOTHING, db_column='session_key')
-    date = models.DateField(db_column='date', blank=False, null=False)  # Field name made lowercase.
+    date = models.DateTimeField()
     url = models.TextField()
     type = models.TextField()
 

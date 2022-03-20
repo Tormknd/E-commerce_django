@@ -170,4 +170,17 @@ def get_game_category(game_id):
     return category_name
 
 
+def get_last_date_item(obj):
+    print(obj)
+    item = 0
+    if len(obj) > 1:
+        count = 0
+        while count < len(obj) - 1:
+            if obj[count].date < obj[count + 1].date:
+                item = obj[count + 1]
+            count += 1
+        return item
+    else:
+        item = obj.first()
+        return item
 
