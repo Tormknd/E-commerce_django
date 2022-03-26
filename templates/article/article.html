@@ -20,13 +20,19 @@
                     </div>
                     <div class="product-infos col">
                         <form action="buy_item" method="GET">
-                            <button type="button" class="btn btn-primary article"
+                            <button type="button" class="btn btn-primary article "
                                     onclick="location.href='{% url "?produit=4/buy" %}'" name="buy_item"> Achat
                             </button>
                         </form>
                     </div>
                     <div class="product-infos col-6">
-                        <button type="button" class="btn btn-primary article"> Ajouter Au Panier</button>
+{#                        <input class="btn btn-primary" id="submit" name="submit" type="submit" value="submit" onclick="location.href='{% url 'add_cart' %}'">#}
+{#                        <button type="button" class="btn btn-primary article"#}
+{#                        onclick="location.href='{% url 'add_cart' %}'" name="add_cart_btn" value="{{ object.idarticle }}"> Ajouter Au Panier</button>#}
+                        <form action="/article/article.html/add_cart?product={{ object.idarticle }}" method="get">
+                            <input id="product" type="text" name="product" value="{{ object.idarticle }}" hidden="True">
+                            <input class="btn btn-primary" type="submit" value="Ajouter au panier">
+                        </form>
                     </div>
                 </div>
                 </span>
