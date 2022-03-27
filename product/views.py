@@ -42,10 +42,9 @@ def add_item_to_cart(request):
     global article
     id_product = request.GET.get('product', '')
     article = Article.objects.get(idarticle=id_product)
-    print(article.nom)
     product = "product=" + str(article.idarticle)
     cart = Cart(request)
-    cart.add_to_cart(product=article, quantity=1, override_quantity=True)
+    cart.add_to_cart(product=article, quantity=1, override_quantity=False)
     return redirect('/article/article.html?' + product)
 
 
