@@ -34,10 +34,10 @@ class Cart(object):
     def save(self):
         self.session.modified = True
 
-    def remove(self, product):
-        product_id = product.idarticle
-        if product_id in self.cart:
-            del self.cart[product_id]
+    def remove(self, product_id):
+        str_product_id = str(product_id)
+        if str_product_id in self.cart:
+            del self.cart[str_product_id]
             self.save()
 
     def __iter__(self):
@@ -51,7 +51,8 @@ class Cart(object):
 
         cart = self.cart.copy()
         for product in products:
-            cart[str(product.idarticle)]['product'] = product.nom
+            cart[str(product.idarticle)]['product'] = product.idarticle
+            cart[str(product.idarticle)]['name'] = product.nom
             cart[str(product.idarticle)]['url'] = product.url
 
         for item in cart.values():

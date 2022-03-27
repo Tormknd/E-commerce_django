@@ -15,7 +15,7 @@
                                     <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
                                         <div class="cart_item_name cart_info_col col">
                                             <div class="cart_item_title">Nom</div>
-                                            <div class="cart_item_text">{{ i.product }}</div>
+                                            <div class="cart_item_text">{{ i.name }}</div>
                                         </div>
                                         <div class="cart_item_quantity cart_info_col col">
                                             <div class="cart_item_title">Quantité</div>
@@ -25,10 +25,13 @@
                                             <div class="cart_item_title">Prix</div>
                                             <div class="cart_item_text">{{ i.total_price }} € </div>
                                         </div>
-{#                                        <div class="cart_item_total cart_info_col col">#}
-{#                                            <div class="cart_item_title">Total</div>#}
-{#                                            <div class="cart_item_text">₹22000</div>#}
-{#                                        </div>#}
+                                        <div class="cart_item_total cart_info_col col">
+                                            <div class="cart_item_text">
+                                                <a href="cart/remove?product={{ i.product }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
