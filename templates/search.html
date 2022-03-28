@@ -1,0 +1,22 @@
+{% include 'header.html' %}
+<div class="container" style="background-color:#f4f4f3">
+
+    <div class="row">
+        <!-- affichage des articles -->
+        {% for article in list %}
+            <div class="col-md-2">
+                <div class="container listeJeux">
+                    <a href="article/article.html?product={{ article.idarticle }}"><img src="{{ article.url }}"
+                                                                                        class="articles_image" alt=""/></a>
+                    <div class="info_produit">
+                        <h4>{{ article.nom }}</h4>
+                        <hr>
+                        <h5>{{ article.prix }} €</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% include 'footer.html' %}
