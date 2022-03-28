@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 
+
 # Create your models here.
 
 
@@ -24,7 +25,8 @@ class Commande(models.Model):
     prixcommande = models.FloatField(db_column='prixCommande', blank=True, null=True)  # Field name made lowercase.
     articletotal = models.IntegerField(db_column='articleTotal', blank=True, null=True)  # Field name made lowercase.
     datecommande = models.DateField(db_column='dateCommande', blank=True, null=True)  # Field name made lowercase.
-    idclient = models.ForeignKey(Client, models.DO_NOTHING, db_column='idClient', blank=True, null=True)  # Field name made lowercase.
+    idclient = models.ForeignKey(Client, models.DO_NOTHING, db_column='idClient', blank=True,
+                                 null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -53,7 +55,7 @@ class Ranger(models.Model):
 
 class BrowsingHistory(models.Model):
     nb = models.AutoField(primary_key=True)
-    session_key = models.ForeignKey('DjangoSession', models.DO_NOTHING, db_column='session_key')
+    session_key = models.CharField(max_length=65535)
     date = models.DateTimeField()
     url = models.TextField()
     type = models.TextField()
@@ -65,7 +67,8 @@ class BrowsingHistory(models.Model):
 
 class Categorie(models.Model):
     idcategorie = models.BigAutoField(db_column='idCategorie', primary_key=True)  # Field name made lowercase.
-    nomcategorie = models.CharField(db_column='nomCategorie', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    nomcategorie = models.CharField(db_column='nomCategorie', max_length=25, blank=True,
+                                    null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
