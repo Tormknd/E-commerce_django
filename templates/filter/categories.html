@@ -1,0 +1,29 @@
+{% include 'header.html' %}
+<div class="container" style="background-color:#f4f4f3">
+    {% if list|length != 0 %}
+        <div class="row">
+            {% for article in list %}
+                <!-- affichage des articles -->
+                <div class="col-md-2">
+                    <div class="container listeJeux">
+                        <a href="article/article.html?product={{ article.0 }}"><img src="{{ article.2 }}"
+                                                                                    class="articles_image"
+                                                                                    alt=""/></a>
+                        <div class="info_produit">
+                            <h4>{{ article.1 }}</h4>
+                            <hr>
+                            <h5>{{ article.3 }} €</h5>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <div class="container" style="padding: 0 0 250px 0;">
+            <h1 style="text-align: center">Aucun jeux dans cette catégorie</h1>
+        </div>
+    {% endif %}
+</div>
+
+{% include 'footer.html' %}

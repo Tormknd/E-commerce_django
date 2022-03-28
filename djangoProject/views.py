@@ -1,6 +1,6 @@
 from datetime import datetime
 from io import StringIO
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from adminInterface.models import Categorie, Ranger
 from adminInterface.views import check_client_device
@@ -36,17 +36,30 @@ def about(request):
 
 
 def search(request):
+    test = {
+        'list': Article.objects.filter(nom__icontains=request.POST['chercher'])
+    }
+    print(test)
     return render(request, 'search.html', {'list': Article.objects.filter(nom__icontains=request.POST['chercher'])})
 
 
 def categories(request):
-    Categorie.objects.filter(idcategorie=request.GET.get('id', ''))
-    r = Ranger.objects.filter(idcategorie=request.GET.get('id', ''))
-    for x in r:
-        print(x)
-    # Article.objects.filter(idarticle=r.)
-    context = {
-        'list': 2
+    list = {}
+
+    val = 0
+    r = Ranger.objects.filter(idcategorie=request.GET.get('categorie', ''))
+    article = [[0 for x in range(5)]for y in range(len(r))]
+    for x in r.values():
+        a = Article.objects.filter(idarticle=x['idarticle'])
+        article[val][0] = a.values()[0]['idarticle']
+        article[val][1] = a.values()[0]['nom']
+        article[val][2] = a.values()[0]['url']
+        article[val][3] = a.values()[0]['prix']
+
+        val += 1
+    list = {
+        'list': article
     }
-    pass
-    return render(request, 'search.html', context)
+    print(list)
+
+    return render(request, 'filter/categories.html', list)
