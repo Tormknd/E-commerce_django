@@ -1,6 +1,16 @@
 {% include 'header.html' %}
 
 <body>
+
+{% if not connected %}
+    <div id="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button id="toggle" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <strong>Veuillez vous connecter</strong>
+    </div>
+{% endif %}
+
 <main class="container">
     <div class="container">
         <div class="row">
@@ -52,77 +62,55 @@
                 <div class="col-sm-5 col-md-6 col-12 pb-4">
                     <h1 style="color:black">Commentaires</h1>
                     {% for key,value in comments.items %}
-                        <div class="text-justify darker mt-4 float-right" style="width: 100%"><img src="https://i.imgur.com/CFpa3nK.jpg" alt=""
-                                                                               class="rounded-circle" width="40"
-                                                                               height="40">
+                        <div class="text-justify darker mt-4 float-right" style="width: 100%"><img
+                                src="https://i.imgur.com/CFpa3nK.jpg" alt=""
+                                class="rounded-circle" width="40"
+                                height="40">
                             <h4>{{ value.username }}</h4> <span>- {{ value.date }}</span> <br>
                             <p>{{ value.text }}</p>
                         </div>
                     {% endfor %}
                 </div>
                 <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
-                    <form id="algin-form">
+                    <form method="post" id="plugin-form"
+                          action="/article/article.html/add_comment?product={{ object.idarticle }}">
+                        {% csrf_token %}
                         <div class="form-group">
-                            <h4>Laisser un commentaire</h4> <label for="message">Commentaire</label> <textarea name="msg" id="" msg
-                                                                                                    cols="30" rows="5"
-                                                                                                    class="form-control"
-                                                                                                    style="background-color: black;color:white"></textarea>
+                            <h4>Laisser un commentaire</h4> <label for="message">Commentaire</label>
+                            {% if request.user.is_authenticated %}
+                                <textarea name="msg" id=""
+                                          cols="30" rows="5"
+                                          class="form-control"
+                                          style="background-color: black;color:white">
+                                </textarea>
+                            {% else %}
+                                <textarea disabled placeholder="Veuillez vous connecter pour commenter" name="msg" id="" cols="30" rows="5" class="form-control" style="background-color: black;color:white"></textarea>
+                            {% endif %}
                         </div>
-                        <div class="form-group">
-                            <button type="button" id="post" class="btn">Ajouter un commentaire</button>
-                        </div>
+                        {% if request.user.is_authenticated %}
+                            <div class="form-group">
+                                <button type="submit" id="post" class="btn">Ajouter un commentaire</button>
+                            </div>
+                        {% else %}
+                            <div class="form-group"></div>
+                        {% endif %}
                     </form>
                 </div>
             </div>
         </div>
     </section>
-
-    {#    <div class="container commentaires" style="">#}
-    {#        <h3>Commentaires :</h3>#}
-
-    {#        <div class="overflow-auto">#}
-    {#            <?php foreach($dataComments as $comment):?>#}
-    {#            <h5><?=htmlentities($comment->nom) ?> </h5>#}
-    {#            <p><?=htmlentities($comment->texteCommentaire) ?>#}
-    {#            <p>#}
-    {#                <?php endforeach?>#}
-    {#        </div>#}
-    {#        <div class="container commentaires">#}
-    {#            <h3>Ajouter un commentaire</h3>#}
-    {#            <form action="index.php?module=mod_addCom&action=addComment&article={{ object.idarticle }}"#}
-    {#                  method="post">#}
-    {#                <div class="mb-3">#}
-    {#                    <label for="exampleInputEmail1" class="form-label">Votre Commentaire</label>#}
-    {#                    <textarea class="form-control" name="formCommentaire" id="formCommentaire" rows="3"></textarea>#}
-    {#                    <div id="emailHelp" class="form-text">Vous devez vous connecter pour publier un commentaire.</div>#}
-    {#                </div>#}
-    {##}
-    {#                <input class="btn btn-primary" type="submit" value="Envoyer">#}
-    {#            </form>#}
-    {#        </div>#}
-    {##}
-    {#    </div>#}
-    {##}
-    {#    <div class="container" style="background-color:#f4f4f3">#}
-    {#        <h3>Vous aimerez aussi :</h3>#}
-    {#        <div class="row">#}
-    {##}
-    {#            <?php foreach($dataArts as $articles): ?>#}
-    {#            <div class="col-md-2">#}
-    {#                <div class="container listeJeux">#}
-    {#                    <a href="index.php?module=mod_article&action=affichePageProduit&nom=<?= htmlentities($articles->nom)?>"><img#}
-    {#                            src="<?=htmlentities($articles->url) ?>" class="articles_image" alt=""/></a>#}
-    {#                    <div class="info_produit">#}
-    {#                        <h4><?= htmlentities($articles->nom)?></h4>#}
-    {#                        <hr>#}
-    {#                        <h5><?= htmlentities($articles->prix)?> €</h5>#}
-    {#                    </div>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#            <?php endforeach?>#}
-    {#        </div>#}
-
-
 </main>
 </body>
+
+<script>
+    const targetDiv = document.getElementById("alert");
+    const btn = document.getElementById("toggle");
+    btn.onclick = function () {
+        if (targetDiv.style.display !== "none") {
+            targetDiv.style.display = "none";
+        } else {
+            targetDiv.style.display = "block";
+        }
+    };
+</script>
 {% include 'footer.html' %}

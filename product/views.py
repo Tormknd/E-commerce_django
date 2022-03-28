@@ -25,6 +25,10 @@ def articles(request):
     mixins.send_on_page_signals(request)
     CreateSession.session(CreateSession, request)
     check_client_device(request)
+    if request.user.is_authenticated:
+        connected = True
+    else:
+        connected = False
     global context
     global article
     id_product = request.GET.get('product', '')
@@ -32,7 +36,8 @@ def articles(request):
     commentaires = comments(request)
     context = {
         "object": article,
-        "comments": commentaires
+        "comments": commentaires,
+        'connected': connected
     }
     return render(request, 'article/article.html', context)
 
@@ -52,7 +57,6 @@ def buy_item(request):
     global context
     global article
     product = "product=" + str(article.idarticle)
-    print(product)
     client = Client.objects.get(idclient=5)
     c = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=client)
     c.save()
@@ -71,7 +75,24 @@ def comments(request):
             'date': c.values()[0]['datecommentaire'],
             'client_id': c.values()[0]['idclient']
         }
-
+    print(final_comments)
     return final_comments
 
 
+def add_comment(request):
+    id_product = request.GET.get('product', '')
+    x = request.POST.items()
+    msg = ""
+    for key, value in x:
+        if key == 'msg':
+            msg = value
+    if request.user.id:
+        c = Commentaire(idclient=request.user.id, textecommentaire=msg, datecommentaire=datetime.datetime.now())
+        c.save()
+        z = Commenter(idarticle=id_product, idclient=request.user.id, idcommentaire=c.idcommentaire)
+        z.save()
+
+    global article
+    article = Article.objects.get(idarticle=id_product)
+    product = "product=" + str(article.idarticle)
+    return redirect('/article/article.html?' + product)
