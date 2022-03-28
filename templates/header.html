@@ -21,7 +21,8 @@
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <form action="index.php?module=modRecherche&action=rechercher" method="post">
+        <form action="search" method="post">
+            {% csrf_token %}
             <input type="search" name="chercher">
             <input class="btn btn-primary" type="submit" value="Rechercher">
         </form>

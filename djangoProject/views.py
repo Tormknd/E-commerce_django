@@ -2,6 +2,7 @@ from datetime import datetime
 from io import StringIO
 from django.shortcuts import render
 
+from adminInterface.models import Categorie, Ranger
 from adminInterface.views import check_client_device
 from cart.cart import Cart
 from product.models import Article
@@ -32,3 +33,20 @@ def about(request):
         request.session.delete_test_cookie()
 
     return render(request, 'accueil.html', {'article_list': Article.objects.all()})
+
+
+def search(request):
+    return render(request, 'search.html', {'list': Article.objects.filter(nom__icontains=request.POST['chercher'])})
+
+
+def categories(request):
+    Categorie.objects.filter(idcategorie=request.GET.get('id', ''))
+    r = Ranger.objects.filter(idcategorie=request.GET.get('id', ''))
+    for x in r:
+        print(x)
+    # Article.objects.filter(idarticle=r.)
+    context = {
+        'list': 2
+    }
+    pass
+    return render(request, 'search.html', context)
