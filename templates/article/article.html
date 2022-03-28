@@ -51,13 +51,14 @@
             <div class="row">
                 <div class="col-sm-5 col-md-6 col-12 pb-4">
                     <h1 style="color:black">Commentaires</h1>
-                    <div class="text-justify darker mt-4 float-right"><img src="https://i.imgur.com/CFpa3nK.jpg" alt=""
-                                                                           class="rounded-circle" width="40"
-                                                                           height="40">
-                        <h4>Rob Simpson</h4> <span>- 20 October, 2018</span> <br>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic
-                            aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                    </div>
+                    {% for key,value in comments.items %}
+                        <div class="text-justify darker mt-4 float-right" style="width: 100%"><img src="https://i.imgur.com/CFpa3nK.jpg" alt=""
+                                                                               class="rounded-circle" width="40"
+                                                                               height="40">
+                            <h4>{{ value.username }}</h4> <span>- {{ value.date }}</span> <br>
+                            <p>{{ value.text }}</p>
+                        </div>
+                    {% endfor %}
                 </div>
                 <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
                     <form id="algin-form">

@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from cart.cart import Cart
 from adminInterface.views import check_client_device
 from djangoProject.createsession import CreateSession
-from .models import Article
+from .models import Article, Commenter, Commentaire, AuthUser
 from django.conf import settings
 from adminInterface import mixins
 from adminInterface.models import Commande, Client
@@ -29,10 +29,10 @@ def articles(request):
     global article
     id_product = request.GET.get('product', '')
     article = Article.objects.get(idarticle=id_product)
-    print(article.idarticle)
-    # mixins.send_article_signals(article, request)
+    commentaires = comments(request)
     context = {
-        "object": article
+        "object": article,
+        "comments": commentaires
     }
     return render(request, 'article/article.html', context)
 
@@ -57,5 +57,21 @@ def buy_item(request):
     c = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=client)
     c.save()
     return redirect('article.html?' + product)
+
+
+def comments(request):
+    product_id = request.GET.get('product', '')
+    comments_infos = Commenter.objects.filter(idarticle=product_id)
+    final_comments = {}
+    for x in comments_infos.values():
+        c = Commentaire.objects.filter(idcommentaire=x['idcommentaire'])
+        final_comments[x['idcommentaire']] = {
+            'username': AuthUser.objects.filter(id=c.values()[0]['idclient']).values()[0]['username'],
+            'text': c.values()[0]['textecommentaire'],
+            'date': c.values()[0]['datecommentaire'],
+            'client_id': c.values()[0]['idclient']
+        }
+
+    return final_comments
 
 
