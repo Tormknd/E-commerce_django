@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 
 
 # Create your models here.
+from product.models import AuthUser
 
 
 class Client(models.Model):
@@ -25,8 +26,7 @@ class Commande(models.Model):
     prixcommande = models.FloatField(db_column='prixCommande', blank=True, null=True)  # Field name made lowercase.
     articletotal = models.IntegerField(db_column='articleTotal', blank=True, null=True)  # Field name made lowercase.
     datecommande = models.DateField(db_column='dateCommande', blank=True, null=True)  # Field name made lowercase.
-    idclient = models.ForeignKey(Client, models.DO_NOTHING, db_column='idClient', blank=True,
-                                 null=True)  # Field name made lowercase.
+    idclient = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='idClient')  # Field name made lowercase.
 
     class Meta:
         managed = False

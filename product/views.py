@@ -53,13 +53,14 @@ def add_item_to_cart(request):
     return redirect('/article/article.html?' + product)
 
 
-def buy_item(request):
+def buy_one_item(request):
     global context
     global article
     product = "product=" + str(article.idarticle)
-    client = Client.objects.get(idclient=5)
-    c = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=client)
-    c.save()
+    authuser = AuthUser.objects.get(id=3)
+    # c = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=authuser)
+    item = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=authuser)
+    item.save()
     return redirect('article.html?' + product)
 
 

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'djangoProject',
     'product.apps.ProductConfig',
     'accounts.apps.AccountsConfig',
+    'cart.apps.CartConfig',
 ]
 
 MIDDLEWARE = [
