@@ -17,7 +17,12 @@ import psycopg2
 def home(request):
     CreateSession.session(CreateSession(), request)
     check_client_device(request)
-    return render(request, 'accueil.html', {'article_list': Article.objects.all()})
+    context = {
+        'article_list': Article.objects.all(),
+        'best_sellers': Article.objects.all().order_by('nbventes').reverse()[:3]
+    }
+
+    return render(request, 'accueil.html', context)
 
 
 def test(request):
@@ -60,6 +65,5 @@ def categories(request):
     list = {
         'list': article
     }
-    print(list)
 
     return render(request, 'filter/categories.html', list)
