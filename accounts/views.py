@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
@@ -85,9 +87,12 @@ def logoutUser(request):
 @login_required(login_url='login')
 def customer(request):
     customer = request.user
+    date_joined = customer.date_joined + datetime.timedelta(hours=2)
+    date_last_co = customer.last_login + datetime.timedelta(hours=2)
+    context = {'customer': customer,
+               'date_joined': date_joined,
+               'last_login': date_last_co}
 
-
-    context = {'customer': customer}
     return render(request, 'accounts/customer.html', context)
 
 
