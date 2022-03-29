@@ -58,7 +58,6 @@ def buy_one_item(request):
     global article
     product = "product=" + str(article.idarticle)
     authuser = AuthUser.objects.get(id=3)
-    # c = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=authuser)
     item = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=authuser)
     item.save()
     return redirect('article.html?' + product)

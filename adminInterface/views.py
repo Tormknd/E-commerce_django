@@ -20,6 +20,8 @@ def home(request):
     month_sales = monthly_sales()
     all_sessions_number = weekly_visitors_by_sessions(request)
     time_spent = time_spent_on_category()
+    total_bounce = bounce_rate()
+    print(total_bounce)
     keys = list(time_spent.keys())
     context = {
         "object": article,
@@ -41,6 +43,7 @@ def home(request):
         "Course_automobile": time_spent['Course automobile'].seconds,
         "user_mobile": clients_device[0],
         "user_desktop": clients_device[1],
+        'total_bounce': total_bounce
     }
 
     return render(request, 'admin/admin.html', context)
@@ -195,6 +198,37 @@ def total_orders(request):
 
     return current_week_orders_num, last_week_orders_num, percentage  # I returned the data from current and last week
     # and the difference between them in percentage
+
+
+def bounce_rate():
+    browsing_hist = BrowsingHistory.objects.all()
+    last_week_start_date = previous_week_range(datetime.datetime.now())[0]
+    last_week_end_date = previous_week_range(datetime.datetime.now())[1]
+    dictio = {}
+    dictio_weekly = {}
+    for x in browsing_hist.values():
+        if x['date'] > last_week_end_date:
+            dictio_weekly[x['date']] = {
+                'key': x['session_key']
+            }
+        dictio[x['date']] = {
+            'key': x['session_key']
+        }
+    dictio_total = {}
+    for key, value in dictio.items():
+        if value['key'] not in dictio_total:
+            dictio_total[value['key']] = 1
+        else:
+            dictio_total[value['key']] = dictio_total[value['key']] + 1
+    total_users = len(dictio_total)
+    bounced_users = 0
+    for key, value in dictio_total.items():
+        if value == 1:
+            bounced_users += 1
+
+
+    total_bounce_rate = (bounced_users*100)/total_users
+    return total_bounce_rate
 
 
 def percent(last_week, second_week):
