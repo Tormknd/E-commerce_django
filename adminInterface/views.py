@@ -7,6 +7,7 @@ from django.contrib.sessions.models import Session
 from .json_datetime_serializer import JSONDateTimeSerializer
 from djangoProject.createsession import CreateSession
 from django.template.defaulttags import register
+import pytz
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -43,7 +44,8 @@ def home(request):
         "Course_automobile": time_spent['Course automobile'].seconds,
         "user_mobile": clients_device[0],
         "user_desktop": clients_device[1],
-        'total_bounce': total_bounce
+        'total_bounce': total_bounce[0],
+        'weekly_bounce': total_bounce[1],
     }
 
     return render(request, 'admin/admin.html', context)
@@ -201,11 +203,12 @@ def total_orders(request):
 
 
 def bounce_rate():
+    utc = pytz.UTC  # POUR QUE LES DEUX DATES PUISSENT SE COMPARER
     browsing_hist = BrowsingHistory.objects.all()
-    last_week_start_date = previous_week_range(datetime.datetime.now())[0]
-    last_week_end_date = previous_week_range(datetime.datetime.now())[1]
+    last_week_end_date = utc.localize(previous_week_range(datetime.datetime.now())[1])
     dictio = {}
     dictio_weekly = {}
+
     for x in browsing_hist.values():
         if x['date'] > last_week_end_date:
             dictio_weekly[x['date']] = {
@@ -214,21 +217,37 @@ def bounce_rate():
         dictio[x['date']] = {
             'key': x['session_key']
         }
+
     dictio_total = {}
+    dictio_weekly_total = {}
+
     for key, value in dictio.items():
         if value['key'] not in dictio_total:
             dictio_total[value['key']] = 1
         else:
             dictio_total[value['key']] = dictio_total[value['key']] + 1
+
+    for key, value in dictio_weekly.items():
+        if value['key'] not in dictio_weekly_total:
+            dictio_weekly_total[value['key']] = 1
+        else:
+            dictio_weekly_total[value['key']] = dictio_weekly_total[value['key']] + 1
+
+    weekly_users = len(dictio_weekly_total)
     total_users = len(dictio_total)
     bounced_users = 0
+    weekly_bounced_users = 0
+    for key, value in dictio_weekly_total.items():
+        if value == 1:
+            weekly_bounced_users += 1
+
     for key, value in dictio_total.items():
         if value == 1:
             bounced_users += 1
 
-
-    total_bounce_rate = (bounced_users*100)/total_users
-    return total_bounce_rate
+    total_bounce_rate = (bounced_users * 100) / total_users
+    total_weekly_bounce_rate = (weekly_bounced_users * 100) / weekly_users
+    return total_bounce_rate, total_weekly_bounce_rate
 
 
 def percent(last_week, second_week):
