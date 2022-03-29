@@ -40,13 +40,14 @@ def buy_cart_articles(request):
     }
     if request.user.is_authenticated:
         client = AuthUser.objects.get(id=request.user.id)
-        c = Commande(prixcommande=cart.get_total_price(), articletotal=len(cart.cart.values()), datecommande=datetime.datetime.now(), idclient=client)
+        c = Commande(prixcommande=cart.get_total_price(), articletotal=len(cart), datecommande=datetime.datetime.now(),
+                     idclient=client)
         c.save()
         for x in cart:
-            p = Posseder(numcommande=c.numcommande, idarticle=x['product'])
-            print("produit", x['product'])
+            p = Posseder(numcommande=c.numcommande, idarticle=x['product'], nombre_article=x['quantity'])
             p.save()
             cart.remove(x['product'])
+
     else:
         context['connected'] = False
         return render(request, 'article/cart.html', context)
