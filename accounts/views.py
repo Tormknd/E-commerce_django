@@ -82,19 +82,13 @@ def logoutUser(request):
 #     return render(request, 'accounts/products.html', {'products': products})
 
 
-# @login_required(login_url='login')
-# def customer(request, pk_test):
-#     customer = Customer.objects.get(id=pk_test)
-#
-#     orders = customer.order_set.all()
-#     order_count = orders.count()
-#
-#     myFilter = OrderFilter(request.GET, queryset=orders)
-#     orders = myFilter.qs
-#
-#     context = {'customer': customer, 'orders': orders, 'order_count': order_count,
-#                'myFilter': myFilter}
-#     return render(request, 'accounts/customer.html', context)
+@login_required(login_url='login')
+def customer(request):
+    customer = request.user
+
+
+    context = {'customer': customer}
+    return render(request, 'accounts/customer.html', context)
 
 
 # @login_required(login_url='login')
