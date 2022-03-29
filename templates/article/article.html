@@ -29,16 +29,14 @@
                         </div>
                     </div>
                     <div class="product-infos col">
-                        <form action="buy_item" method="GET">
-                            <button type="button" class="btn btn-primary article "
-                                    onclick="location.href='{% url "?produit=4/buy" %}'" name="buy_item"> Achat
-                            </button>
+                        {% if user.is_superuser %}
+                            <form action="article.html/buy?product={{ object.idarticle }}" method="get">
+                            <input id="product" type="text" name="product" value="{{ object.idarticle }}" hidden="True">
+                            <input class="btn btn-primary" type="submit" value="Achat">
                         </form>
+                        {% endif %}
                     </div>
                     <div class="product-infos col-6">
-{#                        <input class="btn btn-primary" id="submit" name="submit" type="submit" value="submit" onclick="location.href='{% url 'add_cart' %}'">#}
-{#                        <button type="button" class="btn btn-primary article"#}
-{#                        onclick="location.href='{% url 'add_cart' %}'" name="add_cart_btn" value="{{ object.idarticle }}"> Ajouter Au Panier</button>#}
                         <form action="/article/article.html/add_cart?product={{ object.idarticle }}" method="get">
                             <input id="product" type="text" name="product" value="{{ object.idarticle }}" hidden="True">
                             <input class="btn btn-primary" type="submit" value="Ajouter au panier">
@@ -84,7 +82,9 @@
                                           style="background-color: black;color:white">
                                 </textarea>
                             {% else %}
-                                <textarea disabled placeholder="Veuillez vous connecter pour commenter" name="msg" id="" cols="30" rows="5" class="form-control" style="background-color: black;color:white"></textarea>
+                                <textarea disabled placeholder="Veuillez vous connecter pour commenter" name="msg" id=""
+                                          cols="30" rows="5" class="form-control"
+                                          style="background-color: black;color:white"></textarea>
                             {% endif %}
                         </div>
                         {% if request.user.is_authenticated %}

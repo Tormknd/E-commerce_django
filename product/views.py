@@ -56,11 +56,15 @@ def add_item_to_cart(request):
 def buy_one_item(request):
     global context
     global article
+    id_product = request.GET.get('product', '')
+    article = Article.objects.get(idarticle=id_product)
     product = "product=" + str(article.idarticle)
-    authuser = AuthUser.objects.get(id=3)
+    authuser = AuthUser.objects.get(id=request.user.id)
     item = Commande(prixcommande=article.prix, articletotal=1, datecommande=datetime.datetime.now(), idclient=authuser)
     item.save()
-    return redirect('article.html?' + product)
+    article.nbventes = article.nbventes + 1
+    article.save()
+    return redirect('/article/article.html?' + product)
 
 
 def comments(request):
@@ -75,7 +79,6 @@ def comments(request):
             'date': c.values()[0]['datecommentaire'],
             'client_id': c.values()[0]['idclient']
         }
-    print(final_comments)
     return final_comments
 
 

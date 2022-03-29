@@ -196,7 +196,8 @@
     }
 
     #disconnect {
-        font-size: 15px; !important;
+        font-size: 15px;
+    !important;
     }
 
     .profile-social-links li a img,
@@ -530,6 +531,9 @@
 
         <!-- the username -->
         <h1 class="title">
+            {% if user.is_superuser %}
+                <i id="disconnect" class="bi bi-patch-check"></i>
+            {% endif %}
             {{ customer }}
         </h1>
 
@@ -580,6 +584,13 @@
                 <i id="disconnect" class="bi bi-box-arrow-right "></i>
             </a>
         </li>
+        {% if user.is_superuser %}
+            <li>
+                <a href="/admin" class="nav-item nav-link">
+                    <i id="disconnect" class="bi bi-patch-check"></i>
+                </a>
+            </li>
+        {% endif %}
     </ul>
 
 </aside>

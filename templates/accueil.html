@@ -40,8 +40,8 @@
 
 					<div class="titreBox">
 						<hr>
-						<div class="" style="background-color:red;padding:10px">
-							<h4 style = "text-align: left; margin:0">Plus vendus :</h4>
+						<div class="" style="background-color:#A6580A;padding:10px; border-radius: 5px">
+							<h4 style = "text-align: left; margin:0; color:white;">Les Jeux :</h4>
 						</div>
 					</div>
 
@@ -61,20 +61,6 @@
 									</div>
 								</div>
                             {% endfor %}
-						</div>
-
-						<!-- affichage du dernier commentaire -->
-						<div class = "container divComm">
-							<div class = "container d-inline">
-								<h2>Dernier avis :</h2>
-								<a href = "" ><img src = "<?= $dataCom[0]-> url ?>" id = "article_avis_image" alt = ""/></a>
-							</div>
-							<div class = "container divCom d-inline">
-								<a href = ""><img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png" id = "user_image" alt = ""/></a>
-								<a href = "" style = "text-decoration:none; color: black;"><?= $dataCom[0]-> nomCl ?> : </a>
-{#								<p id = "commentaire"><?= $dataCom[0]-> texteCommentaire ?></p>#}
-
-							</div>
 						</div>
 
 					</div>

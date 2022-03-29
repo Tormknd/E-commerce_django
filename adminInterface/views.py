@@ -1,5 +1,5 @@
 import datetime
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Commande, Ranger, Categorie, BrowsingHistory
 from product.models import Article
 from .models import DjangoSession
@@ -13,6 +13,8 @@ from django.contrib.contenttypes.models import ContentType
 
 
 def home(request):
+    if not request.user.is_superuser:
+        return render(request, 'prohibited.html')
     CreateSession.session(CreateSession, request)
     clients_device = check_client_device(request)
     article = Article.objects.get(idarticle=7)

@@ -19,6 +19,6 @@ from . import views
 urlpatterns = [
     path('', views.articles),
     path('/add_comment', views.add_comment),
-    path('buyyy', views.buy_one_item, name='?produit=4/buy'),
+    path('/buy', views.buy_one_item),
     path('/add_cart', views.add_item_to_cart)
 ]
