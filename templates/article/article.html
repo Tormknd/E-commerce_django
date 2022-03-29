@@ -2,15 +2,6 @@
 
 <body>
 
-{% if not connected %}
-    <div id="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
-        <button id="toggle" type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
-        </button>
-        <strong>Veuillez vous connecter</strong>
-    </div>
-{% endif %}
-
 <main class="container">
     <div class="container">
         <div class="row">
@@ -23,9 +14,9 @@
                     <div class="row">
                     <div class="product-infos col">
                         <div class="" style="line-height: 30px">
-                            <span class="span">
+                            <b><span class="span">
                                 {{ object.prix }} €
-                            </span>
+                            </span></b>
                         </div>
                     </div>
                     <div class="product-infos col">
